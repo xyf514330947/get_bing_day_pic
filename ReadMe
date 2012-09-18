@@ -1,0 +1,5 @@
+This is a python script for getting bing day picture.
+
+How to Use:
+	Run command : python get_bing_day_pic.py
+	and you will get your picture at TOP_DIR which define in script.
