@@ -13,13 +13,18 @@ import time
 import urllib
 
 TOP_DIR = "/home/isayme/"
+COUNTRY = "en-US"
+#COUNTRY = "zh-CN"
 
 def get_bing_pic() :
-    # bing url, "?setmkt=en-US"
-    url = r'http://www.bing.com/'
+    # bing url
+    url = "http://www.bing.com/"
+
+    urllib.urlcleanup()
+    args = urllib.urlencode({"setmkt" : COUNTRY}, {"setlang" : "match"})
     
     # open bing url
-    page = urllib.urlopen(url)
+    page = urllib.urlopen(url, args)
     if None == page:
         print('open %s error' % (url))
         return -1
@@ -49,10 +54,12 @@ def get_bing_pic() :
     if not os.path.exists(localpath):
         os.makedirs(localpath)
     # make local picture path
-    localjpg = localpath + time.strftime('%d.jpg')
+    localjpg = localpath + time.strftime('%d_') + COUNTRY + '.jpg'
 
     # download picture
     urllib.urlretrieve(jpgurl, localjpg) 
+
+    urllib.urlcleanup()
     
     return 0
     
