@@ -11,10 +11,12 @@
 import os
 import time
 import urllib
+import platform
 
-TOP_DIR = "/home/isayme/"
+TOP_DIR = ""
 COUNTRY = "en-US"
-#COUNTRY = "zh-CN"
+def get_platform():
+    return platform.system()
 
 def get_bing_pic() :
     # bing url
@@ -47,16 +49,27 @@ def get_bing_pic() :
         return -1    
     jpgpath = data[posleft + 12 : posright].decode("ascii");
     
-    jpgurl = url + jpgpath
+    if 0 == cmp('/', jpgpath[0:1]):
+        jpgurl = url + jpgpath
+    else:
+        jpgurl = jpgpath
 
-    # make local file directory
-    localpath = TOP_DIR + time.strftime('/bing/%Y/%m/')
+    # make local file dir
+    if 0 == cmp('Windows', get_platform()):
+        localpath = TOP_DIR + time.strftime('bing\\%Y\\%m\\')
+    else:
+        localpath = TOP_DIR + time.strftime('bing/%Y/%m/')
+
     if not os.path.exists(localpath):
         os.makedirs(localpath)
-    # make local picture path
-    localjpg = localpath + time.strftime('%d_') + COUNTRY + '.jpg'
 
-    # download picture
+    # make local file path
+    localjpg = localpath + time.strftime('%d.jpg')
+
+    print ("remote file : %s" % jpgurl)
+    print ("local  file : %s" % localjpg)
+
+    # download jpg file
     urllib.urlretrieve(jpgurl, localjpg) 
 
     urllib.urlcleanup()
